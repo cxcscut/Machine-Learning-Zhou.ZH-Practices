@@ -53,67 +53,67 @@ bool DataLoader::isValid(const string &str,training_data &data) const throw()
 			switch (attr)
 			{
 			case color:
-				if (str_tmp == "ÇàÂÌ")
+				if (str_tmp == "é’ç»¿")
 					data.data_attr.color = green;
-				else if (str_tmp == "ÎÚºÚ")
+				else if (str_tmp == "ä¹Œé»‘")
 					data.data_attr.color = black;
-				else if (str_tmp == "Ç³°×")
+				else if (str_tmp == "æµ…ç™½")
 					data.data_attr.color = white;
 				else
 					return false;
 				break;
 			case root:
-				if (str_tmp == "òéËõ")
+				if (str_tmp == "èœ·ç¼©")
 					data.data_attr.root = curl;
-				else if (str_tmp == "ÉÔòé")
+				else if (str_tmp == "ç¨èœ·")
 					data.data_attr.root = slightly_curl;
-				else if (str_tmp == "Ó²Í¦")
+				else if (str_tmp == "ç¡¬æŒº")
 					data.data_attr.root = straight;
 				else
 					return false;
 				break;
 			case sound:
-				if (str_tmp == "×ÇÏì")
+				if (str_tmp == "æµŠå“")
 					data.data_attr.sound = dull;
-				else if (str_tmp == "³ÁÃÆ")
+				else if (str_tmp == "æ²‰é—·")
 					data.data_attr.sound = very_dull;
-				else if (str_tmp == "Çå´à")
+				else if (str_tmp == "æ¸…è„†")
 					data.data_attr.sound = sharp;
 				else
 					return false;
 				break;
 			case texture:
-				if (str_tmp == "ÇåÎú")
+				if (str_tmp == "æ¸…æ™°")
 					data.data_attr.texture = clear;
-				else if (str_tmp == "ÉÔºı")
+				else if (str_tmp == "ç¨ç³Š")
 					data.data_attr.texture = slightly_blur;
-				else if (str_tmp == "Ä£ºı")
+				else if (str_tmp == "æ¨¡ç³Š")
 					data.data_attr.texture = blur;
 				else
 					return false;
 				break;
 			case navel:
-				if (str_tmp == "°¼Ïİ")
+				if (str_tmp == "å‡¹é™·")
 					data.data_attr.navel = hollow;
-				else if (str_tmp == "ÉÔ°¼")
+				else if (str_tmp == "ç¨å‡¹")
 					data.data_attr.navel = slightly_hollow;
-				else if (str_tmp == "Æ½Ì¹")
+				else if (str_tmp == "å¹³å¦")
 					data.data_attr.navel = flat;
 				else
 					return false;
 				break;
 			case touch:
-				if (str_tmp == "Ó²»¬")
+				if (str_tmp == "ç¡¬æ»‘")
 					data.data_attr.touch = smooth;
-				else if (str_tmp == "ÈíÕ³")
+				else if (str_tmp == "è½¯ç²˜")
 					data.data_attr.touch = sticky;
 				else
 					return false;
 				break;
 			case LABEL_COUNT:
-				if (str_tmp == "ÊÇ")
+				if (str_tmp == "æ˜¯")
 					data.label = good;
-				else if (str_tmp == "·ñ")
+				else if (str_tmp == "å¦")
 					data.label = bad;
 				else
 					return false;
