@@ -17,8 +17,11 @@ public:
 		int label;
 	};
 
-	typedef struct dt_node dt_node,*dt_tree;
-
+	using dt_node = 
+		struct dt_node;
+	using dt_tree = 
+		*dt_node;
+	
 	dt_tree Root;
 	bool trained;
 	std::vector<std::string> attr;
@@ -26,28 +29,28 @@ public:
 	std::string TrainingSetPath;
 
 	CART() = default; 
-	~CART() = delete; 
+	~CART(); 
 
-	inline void SetTrainingSetFilePath(const std::string &filepath) throw(); //ÉèÖÃÑµÁ·Ñù±¾ÎÄ¼şÂ·¾¶
-	std::vector<training_data> GetTrainingSetFromFile(const std::string filename) const throw(); // ´Ó±¾µØÎÄ¼şÖĞ¶ÁÈ¡ÑµÁ·¼¯
-	bool FeedWithTrainingSet() throw(); // ÊäÈëÑµÁ·¼¯
-	bool SaveTreeToFile(const std::string &filename) const throw(); // ±£´æ¾ö²ßÊ÷½á¹¹ºÍ²ÎÊıÖÁ±¾µØ
-	bool LoadTreeFromFile(const std::string &filename) throw(); // ´Ó±¾µØ¶ÁÈ¡¾ö²ßÊ÷½á¹¹ºÍ²ÎÊı
+	inline void SetTrainingSetFilePath(const std::string &filepath) throw(); //è®¾ç½®è®­ç»ƒæ ·æœ¬æ–‡ä»¶è·¯å¾„
+	std::vector<training_data> GetTrainingSetFromFile(const std::string filename) const throw(); // ä»æœ¬åœ°æ–‡ä»¶ä¸­è¯»å–è®­ç»ƒé›†
+	bool FeedWithTrainingSet() throw(); // è¾“å…¥è®­ç»ƒé›†
+	bool SaveTreeToFile(const std::string &filename) const throw(); // ä¿å­˜å†³ç­–æ ‘ç»“æ„å’Œå‚æ•°è‡³æœ¬åœ°
+	bool LoadTreeFromFile(const std::string &filename) throw(); // ä»æœ¬åœ°è¯»å–å†³ç­–æ ‘ç»“æ„å’Œå‚æ•°
 
 private:
 
 	explicit CART(const CART &cart_tree);
 	CART &operator =(const CART &cart_tree);
 	
-	int GetMaxLabel(const std::vector<training_data> &training_set) const throw(std::logic_error); // »ñÈ¡ÑµÁ·¼¯ÖĞÑù±¾Êı×î¶àµÄÀà±ğ
-	bool isSameAttr(const std::vector<training_data> &training_set) const throw(); // ÅĞ¶ÏÑù±¾ÔÚÊôĞÔ¼¯ÉÏÊÇ·ñÈ¡ÖµÒ»ÖÂ
-	bool isSameLabel(const std::vector<training_data> &training_set) const throw(); // ÅĞ¶ÏÑµÁ·¼¯ÖĞÀà±ğ±êÇ©ÊÇ·ñÒ»ÖÂ
-	bool isAttrEmpty(const std::vector<int> &attr) const throw(); // ÅĞ¶ÏÊôĞÔ¼¯ÊÇ·ñÎª¿Õ
-	float Gini(const std::vector<training_data> &training_set) const throw();// Çó»ùÄáÖµ
-	float GetGini_Index(const std::vector<training_data> &training_set,const int &attr_type) const throw(std::logic_error); // Çó»ùÄáÖ¸Êı
-	int GetPatitionAttr(const std::vector<training_data> &training_set,const std::vector<int> &attr_set) const throw(std::logic_error); // Çó×î¼Ñ»®·Ö²ÎÊı
-	dt_tree TreeGenerate(const std::vector<training_data> &training_set,std::vector<int> &attr_set) throw(); // Éú³É¾ö²ßÊ÷½áµã
-	void DeleteNode(dt_tree node) throw(); // É¾³ı½Úµã
+	int GetMaxLabel(const std::vector<training_data> &training_set) const throw(std::logic_error); // è·å–è®­ç»ƒé›†ä¸­æ ·æœ¬æ•°æœ€å¤šçš„ç±»åˆ«
+	bool isSameAttr(const std::vector<training_data> &training_set) const throw(); // åˆ¤æ–­æ ·æœ¬åœ¨å±æ€§é›†ä¸Šæ˜¯å¦å–å€¼ä¸€è‡´
+	bool isSameLabel(const std::vector<training_data> &training_set) const throw(); // åˆ¤æ–­è®­ç»ƒé›†ä¸­ç±»åˆ«æ ‡ç­¾æ˜¯å¦ä¸€è‡´
+	bool isAttrEmpty(const std::vector<int> &attr) const throw(); // åˆ¤æ–­å±æ€§é›†æ˜¯å¦ä¸ºç©º
+	float Gini(const std::vector<training_data> &training_set) const throw();// æ±‚åŸºå°¼å€¼
+	float GetGini_Index(const std::vector<training_data> &training_set,const int &attr_type) const throw(std::logic_error); // æ±‚åŸºå°¼æŒ‡æ•°
+	int GetPatitionAttr(const std::vector<training_data> &training_set,const std::vector<int> &attr_set) const throw(std::logic_error); // æ±‚æœ€ä½³åˆ’åˆ†å‚æ•°
+	dt_tree TreeGenerate(const std::vector<training_data> &training_set,std::vector<int> &attr_set) throw(); // ç”Ÿæˆå†³ç­–æ ‘ç»“ç‚¹
+	void DeleteNode(dt_tree node) throw(); // åˆ é™¤èŠ‚ç‚¹
 
 };
 
