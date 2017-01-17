@@ -19,7 +19,7 @@ CART::~CART()
 		delete dataloder;
 }
 
-void CART::DeleteNode(CART::dt_tree node) throw()
+void CART::DeleteNode(CART::dt_tree node) noexcept
 {
 	if (!node) return;
 	if (node->child.empty()) { delete node; return; }
@@ -33,14 +33,14 @@ void CART::DeleteNode(CART::dt_tree node) throw()
 	delete node;
 }
 
-float CART::Gini(const vector<training_data> &training_set) const throw()
+float CART::Gini(const vector<training_data> &training_set) const noexcept
 {
 	float sum = 0.0f;
 	int d = training_set.size();
 	int dv = 0;
 	vector<float> pk;
 
-	for (int i = 0; i < NUM_OF_LABEL; i++) // ¼ÆËãpk
+	for (int i = 0; i < NUM_OF_LABEL; i++) // è®¡ç®—pk
 	{
 		typename vector<training_data>::const_iterator piter;
 		float pk_temp = 0.0f;
@@ -56,7 +56,7 @@ float CART::Gini(const vector<training_data> &training_set) const throw()
 		dv = 0;
 	}
 
-	for (int k = 0; k < NUM_OF_LABEL; k++) // ¼ÆËã»ùÄáÖµ
+	for (int k = 0; k < NUM_OF_LABEL; k++) // è®¡ç®—åŸºå°¼å€¼
 		sum = sum + pk[k] * pk[k];
 
 	return 1 - sum;
@@ -209,7 +209,7 @@ int CART::GetPatitionAttr(const std::vector<training_data> &training_set,const v
 	return min_index;
 }
 
-bool CART::isSameLabel(const vector<training_data> &training_set) const throw()
+bool CART::isSameLabel(const vector<training_data> &training_set) const noexcept
 {
 	if (training_set.size() <= 0) return false;
 	const int data_label = training_set[0].label;
@@ -222,7 +222,7 @@ bool CART::isSameLabel(const vector<training_data> &training_set) const throw()
 	return true;
 }
 
-bool CART::isAttrEmpty(const vector<int> &attr) const throw()
+bool CART::isAttrEmpty(const vector<int> &attr) const noexcept
 {
 	if (attr.empty())
 		return true;
@@ -230,7 +230,7 @@ bool CART::isAttrEmpty(const vector<int> &attr) const throw()
 		return false;
 }
 
-bool CART::isSameAttr(const vector<training_data> &training_set) const throw()
+bool CART::isSameAttr(const vector<training_data> &training_set) const noexcept
 {
 	if (training_set.size() <= 0) return false;
 	typename vector<training_data>::const_iterator piter;
@@ -265,20 +265,20 @@ int CART::GetMaxLabel(const vector<training_data> &training_set) const throw(log
 	return max_index;
 }
 
-CART::dt_tree CART::TreeGenerate(const vector<training_data> &training_set,vector<int> &attr_set) throw()
+CART::dt_tree CART::TreeGenerate(const vector<training_data> &training_set,vector<int> &attr_set) noexcept
 {
 	CART::dt_tree node_new = new CART::dt_node;
 	int optimal_attr;
 
-	if (CART::isSameLabel(training_set)) // ÑµÁ·¼¯ÖĞËùÓĞÑù±¾ÊôÓÚÍ¬Ò»¸öÀà±ğ
+	if (CART::isSameLabel(training_set)) // è®­ç»ƒé›†ä¸­æ‰€æœ‰æ ·æœ¬å±äºåŒä¸€ä¸ªç±»åˆ«
 	{
-		node_new->isleaf = true; // ±ê¼ÇÎªÒ¶½áµã
-		node_new->label = training_set[0].label; // ½«¸ÃÒ¶½áµã±ê¼ÇÎª¸Ã±êÇ©
+		node_new->isleaf = true; // æ ‡è®°ä¸ºå¶ç»“ç‚¹
+		node_new->label = training_set[0].label; // å°†è¯¥å¶ç»“ç‚¹æ ‡è®°ä¸ºè¯¥æ ‡ç­¾
 	}
 
-	if (attr_set.empty() || CART::isSameAttr(training_set)) // Èç¹ûÊôĞÔ¼¯Îª¿Õ¼¯»òÕßÑµÁ·¼¯ÔÚ¸ÃÊôĞÔ¼¯ÉÏµÄÈ¡Öµ¾ùÏàÍ¬
+	if (attr_set.empty() || CART::isSameAttr(training_set)) // å¦‚æœå±æ€§é›†ä¸ºç©ºé›†æˆ–è€…è®­ç»ƒé›†åœ¨è¯¥å±æ€§é›†ä¸Šçš„å–å€¼å‡ç›¸åŒ
 	{
-		node_new->isleaf = true; // ±ê¼ÇÎªÒ¶½áµã
+		node_new->isleaf = true; // æ ‡è®°ä¸ºå¶ç»“ç‚¹
 		try {
 			node_new->label = CART::GetMaxLabel(training_set);
 		}
@@ -312,25 +312,25 @@ CART::dt_tree CART::TreeGenerate(const vector<training_data> &training_set,vecto
 			CART::dt_tree node_branch;
 			typename vector<training_data>::const_iterator piter;
 
-			for (piter = training_set.begin(); piter != training_set.end(); piter++) // µÃµ½DÖĞÔÚ»®·ÖÊôĞÔÉÏÈ¡ÖµÎªavµÄÑù±¾×Ó¼¯
+			for (piter = training_set.begin(); piter != training_set.end(); piter++) // å¾—åˆ°Dä¸­åœ¨åˆ’åˆ†å±æ€§ä¸Šå–å€¼ä¸ºavçš„æ ·æœ¬å­é›†
 				if (piter->data_attr.color == k)
 					Dv.push_back(*piter);
 
-			if (Dv.empty()) // Èç¹ûDvÎª¿Õ
+			if (Dv.empty()) // å¦‚æœDvä¸ºç©º
 			{
 				node_branch = new dt_node;
 				node_branch->isleaf = true;
-				node_branch->label = CART::GetMaxLabel(training_set); // ½«·ÖÖ§½áµã±ê¼ÇÎªÑµÁ·¼¯ÖĞ×î¶àµÄÀà
+				node_branch->label = CART::GetMaxLabel(training_set); // å°†åˆ†æ”¯ç»“ç‚¹æ ‡è®°ä¸ºè®­ç»ƒé›†ä¸­æœ€å¤šçš„ç±»
 			}
 			else
 			{
 				typename vector<int>::iterator _piter;
 
-				for (_piter = attr_set.begin(); _piter != attr_set.end(); _piter++) // ÊôĞÔ¼¯ÖĞÉ¾³ı»®·ÖÊôĞÔ
+				for (_piter = attr_set.begin(); _piter != attr_set.end(); _piter++) // å±æ€§é›†ä¸­åˆ é™¤åˆ’åˆ†å±æ€§
 				{
 					if (*_piter == optimal_attr) {
 						attr_set.erase(_piter); 
-						_piter = attr_set.begin(); // ·ÀÖ¹eraseÖ®ºó_piter±äÎªÒ°Ö¸Õë
+						_piter = attr_set.begin(); // é˜²æ­¢eraseä¹‹å_piterå˜ä¸ºé‡æŒ‡é’ˆ
 					}
 				}
 
@@ -351,25 +351,25 @@ CART::dt_tree CART::TreeGenerate(const vector<training_data> &training_set,vecto
 			CART::dt_tree node_branch;
 			typename vector<training_data>::const_iterator piter;
 
-			for (piter = training_set.begin(); piter != training_set.end(); piter++) // µÃµ½DÖĞÔÚ»®·ÖÊôĞÔÉÏÈ¡ÖµÎªavµÄÑù±¾×Ó¼¯
+			for (piter = training_set.begin(); piter != training_set.end(); piter++) // å¾—åˆ°Dä¸­åœ¨åˆ’åˆ†å±æ€§ä¸Šå–å€¼ä¸ºavçš„æ ·æœ¬å­é›†
 				if (piter->data_attr.root == k)
 					Dv.push_back(*piter);
 
-			if (Dv.empty()) // Èç¹ûDvÎª¿Õ
+			if (Dv.empty()) // å¦‚æœDvä¸ºç©º
 			{
 				node_branch = new dt_node;
 				node_branch->isleaf = true;
-				node_branch->label = CART::GetMaxLabel(training_set); // ½«·ÖÖ§½áµã±ê¼ÇÎªÑµÁ·¼¯ÖĞ×î¶àµÄÀà
+				node_branch->label = CART::GetMaxLabel(training_set); // å°†åˆ†æ”¯ç»“ç‚¹æ ‡è®°ä¸ºè®­ç»ƒé›†ä¸­æœ€å¤šçš„ç±»
 			}
 			else
 			{
 				typename vector<int>::iterator _piter;
 
-				for (_piter = attr_set.begin(); _piter != attr_set.end(); _piter++) // ÊôĞÔ¼¯ÖĞÉ¾³ı»®·ÖÊôĞÔ
+				for (_piter = attr_set.begin(); _piter != attr_set.end(); _piter++) // å±æ€§é›†ä¸­åˆ é™¤åˆ’åˆ†å±æ€§
 				{
 					if (*_piter == optimal_attr) {
 						attr_set.erase(_piter);
-						_piter = attr_set.begin(); // ·ÀÖ¹eraseÖ®ºó_piter±äÎªÒ°Ö¸Õë
+						_piter = attr_set.begin(); // é˜²æ­¢eraseä¹‹å_piterå˜ä¸ºé‡æŒ‡é’ˆ
 					}
 				}
 
@@ -390,25 +390,25 @@ CART::dt_tree CART::TreeGenerate(const vector<training_data> &training_set,vecto
 			CART::dt_tree node_branch;
 			typename vector<training_data>::const_iterator piter;
 
-			for (piter = training_set.begin(); piter != training_set.end(); piter++) // µÃµ½DÖĞÔÚ»®·ÖÊôĞÔÉÏÈ¡ÖµÎªavµÄÑù±¾×Ó¼¯
+			for (piter = training_set.begin(); piter != training_set.end(); piter++) // å¾—åˆ°Dä¸­åœ¨åˆ’åˆ†å±æ€§ä¸Šå–å€¼ä¸ºavçš„æ ·æœ¬å­é›†
 				if (piter->data_attr.sound == k)
 					Dv.push_back(*piter);
 
-			if (Dv.empty()) // Èç¹ûDvÎª¿Õ
+			if (Dv.empty()) // å¦‚æœDvä¸ºç©º
 			{
 				node_branch = new dt_node;
 				node_branch->isleaf = true;
-				node_branch->label = CART::GetMaxLabel(training_set); // ½«·ÖÖ§½áµã±ê¼ÇÎªÑµÁ·¼¯ÖĞ×î¶àµÄÀà
+				node_branch->label = CART::GetMaxLabel(training_set); // å°†åˆ†æ”¯ç»“ç‚¹æ ‡è®°ä¸ºè®­ç»ƒé›†ä¸­æœ€å¤šçš„ç±»
 			}
 			else
 			{
 				typename vector<int>::iterator _piter;
 
-				for (_piter = attr_set.begin(); _piter != attr_set.end(); _piter++) // ÊôĞÔ¼¯ÖĞÉ¾³ı»®·ÖÊôĞÔ
+				for (_piter = attr_set.begin(); _piter != attr_set.end(); _piter++) // å±æ€§é›†ä¸­åˆ é™¤åˆ’åˆ†å±æ€§
 				{
 					if (*_piter == optimal_attr) {
 						attr_set.erase(_piter);
-						_piter = attr_set.begin(); // ·ÀÖ¹eraseÖ®ºó_piter±äÎªÒ°Ö¸Õë
+						_piter = attr_set.begin(); // é˜²æ­¢eraseä¹‹å_piterå˜ä¸ºé‡æŒ‡é’ˆ
 					}
 				}
 
@@ -429,25 +429,25 @@ CART::dt_tree CART::TreeGenerate(const vector<training_data> &training_set,vecto
 			CART::dt_tree node_branch;
 			typename vector<training_data>::const_iterator piter;
 
-			for (piter = training_set.begin(); piter != training_set.end(); piter++) // µÃµ½DÖĞÔÚ»®·ÖÊôĞÔÉÏÈ¡ÖµÎªavµÄÑù±¾×Ó¼¯
+			for (piter = training_set.begin(); piter != training_set.end(); piter++) // å¾—åˆ°Dä¸­åœ¨åˆ’åˆ†å±æ€§ä¸Šå–å€¼ä¸ºavçš„æ ·æœ¬å­é›†
 				if (piter->data_attr.texture == k)
 					Dv.push_back(*piter);
 
-			if (Dv.empty()) // Èç¹ûDvÎª¿Õ
+			if (Dv.empty()) // å¦‚æœDvä¸ºç©º
 			{
 				node_branch = new dt_node;
 				node_branch->isleaf = true;
-				node_branch->label = CART::GetMaxLabel(training_set); // ½«·ÖÖ§½áµã±ê¼ÇÎªÑµÁ·¼¯ÖĞ×î¶àµÄÀà
+				node_branch->label = CART::GetMaxLabel(training_set); // å°†åˆ†æ”¯ç»“ç‚¹æ ‡è®°ä¸ºè®­ç»ƒé›†ä¸­æœ€å¤šçš„ç±»
 			}
 			else
 			{
 				typename vector<int>::iterator _piter;
 
-				for (_piter = attr_set.begin(); _piter != attr_set.end(); _piter++) // ÊôĞÔ¼¯ÖĞÉ¾³ı»®·ÖÊôĞÔ
+				for (_piter = attr_set.begin(); _piter != attr_set.end(); _piter++) // å±æ€§é›†ä¸­åˆ é™¤åˆ’åˆ†å±æ€§
 				{
 					if (*_piter == optimal_attr) {
 						attr_set.erase(_piter);
-						_piter = attr_set.begin(); // ·ÀÖ¹eraseÖ®ºó_piter±äÎªÒ°Ö¸Õë
+						_piter = attr_set.begin(); // é˜²æ­¢eraseä¹‹å_piterå˜ä¸ºé‡æŒ‡é’ˆ
 					}
 				}
 
@@ -468,25 +468,25 @@ CART::dt_tree CART::TreeGenerate(const vector<training_data> &training_set,vecto
 			CART::dt_tree node_branch;
 			typename vector<training_data>::const_iterator piter;
 
-			for (piter = training_set.begin(); piter != training_set.end(); piter++) // µÃµ½DÖĞÔÚ»®·ÖÊôĞÔÉÏÈ¡ÖµÎªavµÄÑù±¾×Ó¼¯
+			for (piter = training_set.begin(); piter != training_set.end(); piter++) // å¾—åˆ°Dä¸­åœ¨åˆ’åˆ†å±æ€§ä¸Šå–å€¼ä¸ºavçš„æ ·æœ¬å­é›†
 				if (piter->data_attr.navel == k)
 					Dv.push_back(*piter);
 
-			if (Dv.empty()) // Èç¹ûDvÎª¿Õ
+			if (Dv.empty()) // å¦‚æœDvä¸ºç©º
 			{
 				node_branch = new dt_node;
 				node_branch->isleaf = true;
-				node_branch->label = CART::GetMaxLabel(training_set); // ½«·ÖÖ§½áµã±ê¼ÇÎªÑµÁ·¼¯ÖĞ×î¶àµÄÀà
+				node_branch->label = CART::GetMaxLabel(training_set); // å°†åˆ†æ”¯ç»“ç‚¹æ ‡è®°ä¸ºè®­ç»ƒé›†ä¸­æœ€å¤šçš„ç±»
 			}
 			else
 			{
 				typename vector<int>::iterator _piter;
 
-				for (_piter = attr_set.begin(); _piter != attr_set.end(); _piter++) // ÊôĞÔ¼¯ÖĞÉ¾³ı»®·ÖÊôĞÔ
+				for (_piter = attr_set.begin(); _piter != attr_set.end(); _piter++) // å±æ€§é›†ä¸­åˆ é™¤åˆ’åˆ†å±æ€§
 				{
 					if (*_piter == optimal_attr) {
 						attr_set.erase(_piter);
-						_piter = attr_set.begin(); // ·ÀÖ¹eraseÖ®ºó_piter±äÎªÒ°Ö¸Õë
+						_piter = attr_set.begin(); // é˜²æ­¢eraseä¹‹å_piterå˜ä¸ºé‡æŒ‡é’ˆ
 					}
 				}
 
@@ -507,25 +507,25 @@ CART::dt_tree CART::TreeGenerate(const vector<training_data> &training_set,vecto
 			CART::dt_tree node_branch;
 			typename vector<training_data>::const_iterator piter;
 
-			for (piter = training_set.begin(); piter != training_set.end(); piter++) // µÃµ½DÖĞÔÚ»®·ÖÊôĞÔÉÏÈ¡ÖµÎªavµÄÑù±¾×Ó¼¯
+			for (piter = training_set.begin(); piter != training_set.end(); piter++) // å¾—åˆ°Dä¸­åœ¨åˆ’åˆ†å±æ€§ä¸Šå–å€¼ä¸ºavçš„æ ·æœ¬å­é›†
 				if (piter->data_attr.touch == k)
 					Dv.push_back(*piter);
 
-			if (Dv.empty()) // Èç¹ûDvÎª¿Õ
+			if (Dv.empty()) // å¦‚æœDvä¸ºç©º
 			{
 				node_branch = new dt_node;
 				node_branch->isleaf = true;
-				node_branch->label = CART::GetMaxLabel(training_set); // ½«·ÖÖ§½áµã±ê¼ÇÎªÑµÁ·¼¯ÖĞ×î¶àµÄÀà
+				node_branch->label = CART::GetMaxLabel(training_set); // å°†åˆ†æ”¯ç»“ç‚¹æ ‡è®°ä¸ºè®­ç»ƒé›†ä¸­æœ€å¤šçš„ç±»
 			}
 			else
 			{
 				typename vector<int>::iterator _piter;
 
-				for (_piter = attr_set.begin(); _piter != attr_set.end(); _piter++) // ÊôĞÔ¼¯ÖĞÉ¾³ı»®·ÖÊôĞÔ
+				for (_piter = attr_set.begin(); _piter != attr_set.end(); _piter++) // å±æ€§é›†ä¸­åˆ é™¤åˆ’åˆ†å±æ€§
 				{
 					if (*_piter == optimal_attr) {
 						attr_set.erase(_piter);
-						_piter = attr_set.begin(); // ·ÀÖ¹eraseÖ®ºó_piter±äÎªÒ°Ö¸Õë
+						_piter = attr_set.begin(); // é˜²æ­¢eraseä¹‹å_piterå˜ä¸ºé‡æŒ‡é’ˆ
 					}
 				}
 
@@ -540,7 +540,7 @@ CART::dt_tree CART::TreeGenerate(const vector<training_data> &training_set,vecto
 	}
 }
 
-bool CART::FeedWithTrainingSet() throw()
+bool CART::FeedWithTrainingSet() noexcept
 {
 	vector<int> attr{ color,root,sound,texture,navel,touch };
 	vector<training_data> training_set;
@@ -556,7 +556,7 @@ bool CART::FeedWithTrainingSet() throw()
 	return true;
 }
 
-vector<training_data> CART::GetTrainingSetFromFile(const string filename) const throw()
+vector<training_data> CART::GetTrainingSetFromFile(const string filename) const noexcept
 {
 	vector<training_data> ret;
 
@@ -565,7 +565,6 @@ vector<training_data> CART::GetTrainingSetFromFile(const string filename) const 
 	return ret;
 }
 
-inline void CART::SetTrainingSetFilePath(const string &filepath) throw()
-{
+inline void CART::SetTrainingSetFilePath(const string &filepath) noexcept
 	CART::TrainingSetPath = filepath;
 }
