@@ -4,8 +4,9 @@
 #include "training_data.h"
 #include <vector>
 #include "ML_exception.h"
-#define MAX_LINE 1000
-#define LABEL_COUNT NUM_OF_ATTR
+
+using MAX_LINE = 1000;
+using LABEL_COUNT = NUM_OF_ATTR
 
 class DataLoader final
 {
@@ -15,16 +16,16 @@ public:
 	DataLoader();
 	~DataLoader();
 
-	std::vector<training_data> GetTrainingData(const std::string &filename)const throw(); // »ñÈ¡ÑµÁ·Ñù±¾¼¯
+	std::vector<training_data> GetTrainingData(const std::string &filename)const throw(); // è·å–è®­ç»ƒæ ·æœ¬é›†
 
 private:
 
 	explicit DataLoader(const DataLoader &);
 	DataLoader &operator =(const DataLoader &rhs);
 
-	std::vector<std::string> LoaderTrainingSetFromFile(const std::string &filename) const throw(std::logic_error); // ´ÓÎÄ¼şÖĞ¶ÁÈ¡ÑµÁ·Ñù±¾µ½ÄÚ´æ
-	bool isValid(const std::string &str,training_data &data) const throw(); // ÑéÖ¤Ñù±¾ÓĞĞ§ĞÔ
-	std::vector<training_data> DataStringProcessing(const std::vector<std::string> &str) const throw(std::logic_error); // ´ÓÑù±¾×Ö·û´®ÖĞ·ÖÀë³öÊôĞÔÓë±ê¼Ç
+	std::vector<std::string> LoaderTrainingSetFromFile(const std::string &filename) const throw(std::logic_error); // ä»æ–‡ä»¶ä¸­è¯»å–è®­ç»ƒæ ·æœ¬åˆ°å†…å­˜
+	bool isValid(const std::string &str,training_data &data) const throw(); // éªŒè¯æ ·æœ¬æœ‰æ•ˆæ€§
+	std::vector<training_data> DataStringProcessing(const std::vector<std::string> &str) const throw(std::logic_error); // ä»æ ·æœ¬å­—ç¬¦ä¸²ä¸­åˆ†ç¦»å‡ºå±æ€§ä¸æ ‡è®°
 
 };
 
